@@ -366,7 +366,7 @@
                                 const chosen = form.querySelector(`input[name="q${qi}"]:checked`);
                                 if (chosen) {
                                     const chosenLabel = form.querySelector(`label[for="${chosen.id}"]`);
-                                    if (chosen.dataset.correct === 'true') {
+                                    if (chosen.getAttribute('data-correct') === 'true') {
                                         chosenLabel.style.background = '#c8e6c9';
                                         right++;
                                     } else {
