@@ -74,7 +74,7 @@
     bodyWrap.appendChild(analysisBox);
 
     // ▸ Divider
-    const divider = document.createElement('hr');
+    divider = document.createElement('hr');
     divider.style.cssText = 'margin:18px 0;border:none;border-top:1px dashed #ccc;';
     bodyWrap.appendChild(divider);
 
