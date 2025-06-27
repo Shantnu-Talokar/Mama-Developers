@@ -280,13 +280,13 @@
                 ghInput.placeholder = 'Paste your GitHub project link...';
                 ghInput.style.cssText =
                     'margin-top:18px;width:100%;padding:6px;border:1px solid #ccc;border-radius:4px;';
-                modulesBox.appendChild(ghInput);
+                evalResult.appendChild(ghInput);
 
                 const evalBtn = document.createElement('button');
                 evalBtn.textContent = '🧠 Evaluate Project';
                 evalBtn.style.cssText =
                     'margin-top:10px;padding:6px 12px;border:none;background:#9c27b0;color:white;border-radius:4px;cursor:pointer;';
-                modulesBox.appendChild(evalBtn);
+                evalResult.appendChild(evalBtn);
 
                 evalBtn.onclick = async () => {
                     const link = ghInput.value.trim();
