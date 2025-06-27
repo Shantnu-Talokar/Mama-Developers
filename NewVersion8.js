@@ -90,7 +90,7 @@
     
     const evalResult = document.createElement('div');
     evalResult.id = 'evalResult';
-    bodyWrap.appendChild(modulesBox);
+    bodyWrap.appendChild(evalResult);
 
     // ▸ BOTTOM BAR (Ask + Meme) fixed inside panel
     const bottomBar = document.createElement('div');
