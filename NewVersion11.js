@@ -87,7 +87,7 @@
     const dividerTwo = document.createElement('hr');
     dividerTwo.style.cssText = 'margin:18px 0;border:none;border-top:1px dashed #ccc;';
     bodyWrap.appendChild(dividerTwo);
-    
+
     const evalResult = document.createElement('div');
     evalResult.id = 'evalResult';
     bodyWrap.appendChild(evalResult);
@@ -264,6 +264,105 @@
                 quizBtn.textContent = '📝 Quiz Me';
                 quizBtn.style.cssText = 'padding:6px 12px;background:#ffc107;color:#000;border:none;border-radius:6px;cursor:pointer;';
                 btnRow.appendChild(quizBtn);
+
+                quizBtn.onclick = async () => {
+                    const chosen = mods
+                        .filter((_, i) => localStorage.getItem('udemyMod-' + i) === '1')
+                        .map(m => m.innerText.trim());
+
+                    if (!chosen.length) return alert('Select modules first.');
+
+                    overlay.innerHTML = '<h2>📝 Generating quiz…</h2>';
+
+                    const qPrompt =
+                        `You are an advanced technical course quiz generator.\n` +
+                        `Generate EXACTLY 5 high-quality multiple-choice questions (MCQs) based strictly on the technical content from these modules:\n` +
+                        `${chosen.join('\n')}\n\n` +
+                        `Guidelines:\n` +
+                        `1. Questions must cover a range of difficulty levels: 2 easy, 2 medium, and 1 hard.\n` +
+                        `2. Only include content that is clearly present in the modules.\n` +
+                        `3. Each question must be clear, unambiguous, and test conceptual understanding or practical application.\n` +
+                        `4. Include exactly 4 options (A–D). ONLY ONE must be correct.\n` +
+                        `5. Wrap the correct option in <span class="answer"></span> tags.\n` +
+                        `6. Avoid repeating questions or options.\n\n` +
+                        `Format strictly as:\nQ1. <question>\nA) <opt>\nB) <opt>\nC) <opt>\nD) <opt>\n\n` +
+                        `Begin:`;
+
+                    try {
+                        const txt = await cohereQuery(qPrompt, 650);
+                        overlay.style.display = 'block';
+                        overlay.innerHTML =
+                            '<button id="closeQuiz" style="position:absolute;top:15px;right:20px;font-size:20px;' +
+                            'background:#f44336;color:white;border:none;border-radius:4px;padding:4px 12px;cursor:pointer;">✖</button>' +
+                            '<h2 style="text-align:center;margin:10px 0 20px">📝 Module Quiz</h2>' +
+                            '<form id="quizForm" style="font-size:16px;line-height:1.6"></form>' +
+                            '<button id="submitQuiz" style="margin-top:25px;display:block;background:#4caf50;color:white;' +
+                            'border:none;padding:10px 20px;border-radius:6px;cursor:pointer;margin-left:auto;margin-right:auto;">Show Answers</button>' +
+                            '<div id="scoreBox" style="text-align:center;font-size:18px;margin-top:15px;font-weight:bold;"></div>';
+
+                        document.getElementById('closeQuiz').onclick = () => (overlay.style.display = 'none');
+                        const form = overlay.querySelector('#quizForm');
+                        const blocks = txt.match(/(?:Q?\d+[.)])[\s\S]*?(?=(?:Q?\d+[.)])|$)/g) || [];
+
+                        const correctMap = [];
+                        blocks.forEach((blk, qi) => {
+                            const lines = blk.trim().split('\n').filter(Boolean);
+                            const qLine = lines.shift();
+                            const qDiv = document.createElement('div');
+                            qDiv.style.marginBottom = '20px';
+                            qDiv.innerHTML = `<b>${qLine.replace(/^Q?\d+[.)]\s*/, '')}</b><br><br>`;
+                            const options = lines.slice(0, 4).map((line, oi) => {
+                                const isCorrect = /class=["']answer["']/.test(line);
+                                const text = line.replace(/<span class=["']answer["']>/, '').replace('</span>', '').replace(/^[A-Da-d][).]\s*/, '').trim();
+                                return { text, isCorrect };
+                            });
+                            for (let i = options.length - 1; i > 0; i--) {
+                                const j = Math.floor(Math.random() * (i + 1));
+                                [options[i], options[j]] = [options[j], options[i]];
+                            }
+                            options.forEach((opt, oi) => {
+                                const id = `q${qi}o${oi}`;
+                                const radio = document.createElement('input');
+                                radio.type = 'radio';
+                                radio.name = `q${qi}`;
+                                radio.id = id;
+                                radio.setAttribute('data-correct', opt.isCorrect);
+                                const label = document.createElement('label');
+                                label.htmlFor = id;
+                                label.style.cssText = 'display:block;margin:6px 0;padding:6px 10px;border-radius:5px;cursor:pointer;border:1px solid #ccc;';
+                                label.appendChild(radio);
+                                label.appendChild(document.createTextNode(' ' + opt.text));
+                                qDiv.appendChild(label);
+                                if (opt.isCorrect) correctMap[qi] = label;
+                            });
+                            form.appendChild(qDiv);
+                        });
+
+                        overlay.querySelector('#submitQuiz').onclick = () => {
+                            let right = 0;
+                            correctMap.forEach((correctLabel, qi) => {
+                                const chosen = form.querySelector(`input[name="q${qi}"]:checked`);
+                                if (chosen) {
+                                    const chosenLabel = form.querySelector(`label[for="${chosen.id}"]`);
+                                    if (chosen.getAttribute('data-correct') === 'true') {
+                                        chosenLabel.style.background = '#c8e6c9';
+                                        right++;
+                                    } else {
+                                        chosenLabel.style.background = '#ffcdd2';
+                                        correctLabel.style.background = '#e0f2f1';
+                                    }
+                                } else {
+                                    correctLabel.style.background = '#e0f2f1';
+                                }
+                            });
+                            const pct = Math.round((right / correctMap.length) * 100);
+                            addTokens(right);
+                            overlay.querySelector('#scoreBox').textContent = `🎯 You scored ${right}/${correctMap.length} (${pct}%)`;
+                        };
+                    } catch (err) {
+                        overlay.innerHTML = '<p style="color:red;text-align:center">❌ Failed to generate quiz.</p>';
+                    }
+                };
 
                 /* --- Project Suggestions --- */
                 const ideasDiv = document.createElement('div');
