@@ -266,15 +266,15 @@
                 btnRow.appendChild(quizBtn);
 
                 /* --- QUIZ ME ------------------------------------ */
-                let quizOverlay = document.getElementById('udemyQuizOverlay');
-                if (!quizOverlay) {
-                    quizOverlay = document.createElement('div');
-                    quizOverlay.id = 'udemyQuizOverlay';
-                    quizOverlay.style.cssText =
+                let overlay = document.getElementById('udemyoverlay');
+                if (!overlay) {
+                    overlay = document.createElement('div');
+                    overlay.id = 'udemyoverlay';
+                    overlay.style.cssText =
                         'display:none;position:fixed;top:10%;left:10%;width:80%;height:80%;background:#fffbd6;' +
                         'border:6px solid #ff9800;border-radius:20px;z-index:10000;padding:25px;overflow:auto;' +
                         'box-shadow:0 8px 25px rgba(0,0,0,.4);font-family:sans-serif;';
-                    document.body.appendChild(quizOverlay);
+                    document.body.appendChild(overlay);
                 }
 
                 quizBtn.onclick = async () => {
@@ -284,7 +284,7 @@
 
                     if (!chosen.length) return alert('Select modules first.');
 
-                    quizOverlay.innerHTML = '<h2>📝 Generating quiz…</h2>';
+                    overlay.innerHTML = '<h2>📝 Generating quiz…</h2>';
 
                     const qPrompt =
                         `You are an advanced technical‑course quiz generator.\n` +
@@ -300,8 +300,8 @@
 
                     try {
                         const txt = await cohereQuery(qPrompt, 650);
-                        quizOverlay.style.display = 'block';
-                        quizOverlay.innerHTML =
+                        overlay.style.display = 'block';
+                        overlay.innerHTML =
                             '<button id="closeQuiz" style="position:absolute;top:15px;right:20px;font-size:20px;' +
                             'background:#f44336;color:white;border:none;border-radius:4px;padding:4px 12px;cursor:pointer;">✖</button>' +
                             '<h2 style="text-align:center;margin:10px 0 20px">📝 Module Quiz</h2>' +
@@ -310,8 +310,8 @@
                             'border:none;padding:10px 20px;border-radius:6px;cursor:pointer;margin-left:auto;margin-right:auto;">Show Answers</button>' +
                             '<div id="scoreBox" style="text-align:center;font-size:18px;margin-top:15px;font-weight:bold;"></div>';
 
-                        document.getElementById('closeQuiz').onclick = () => (quizOverlay.style.display = 'none');
-                        const form = quizOverlay.querySelector('#quizForm');
+                        document.getElementById('closeQuiz').onclick = () => (overlay.style.display = 'none');
+                        const form = overlay.querySelector('#quizForm');
 
                         /* --- split the Cohere output into 5 blocks --- */
                         const blocks = txt.match(/(?:Q?\d+[.)])[\s\S]*?(?=(?:Q?\d+[.)])|$)/g) || [];
@@ -360,7 +360,7 @@
                             form.appendChild(qDiv);
                         });
 
-                        quizOverlay.querySelector('#submitQuiz').onclick = () => {
+                        overlay.querySelector('#submitQuiz').onclick = () => {
                             let right = 0;
                             correctMap.forEach((correctLabel, qi) => {
                                 const chosen = form.querySelector(`input[name="q${qi}"]:checked`);
@@ -379,11 +379,11 @@
                             });
                             const pct = Math.round((right / correctMap.length) * 100);
                             addTokens(right);                        /* reward tokens */
-                            quizOverlay.querySelector('#scoreBox').textContent =
+                            overlay.querySelector('#scoreBox').textContent =
                                 `🎯 You scored ${right}/${correctMap.length} (${pct}%)`;
                         };
                     } catch (err) {
-                        quizOverlay.innerHTML =
+                        overlay.innerHTML =
                             '<p style="color:red;text-align:center">❌ Failed to generate quiz.</p>';
                         console.error(err);
                     }
