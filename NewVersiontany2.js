@@ -313,20 +313,26 @@
                         document.getElementById('closeQuiz').onclick = () => (overlay.style.display = 'none');
                         const form = overlay.querySelector('#quizForm');
 
-                        /* --- split the Cohere output into 5 blocks --- */
+                        /* --- split Cohere output into 5 blocks --- */
                         const blocks = txt.match(/(?:Q?\d+[.)])[\s\S]*?(?=(?:Q?\d+[.)])|$)/g) || [];
 
                         const correctMap = [];
                         blocks.forEach((blk, qi) => {
                             const lines = blk.trim().split('\n').filter(Boolean);
-                            const qLine = lines.shift();           /* “Q1. …” */
+
+                            /* NEW — fallback for “Answer: X” format */
+                            const answerLetter = (blk.match(/Answer\s*[:\-]?\s*([A-D])/i) || [])[1]?.toUpperCase() || null;
+
+                            const qLine = lines.shift();
                             const qDiv = document.createElement('div');
                             qDiv.style.marginBottom = '20px';
                             qDiv.innerHTML = `<b>${qLine.replace(/^Q?\d+[.)]\s*/, '')}</b><br><br>`;
 
                             /* extract A‑D */
-                            const opts = lines.slice(0, 4).map(line => {
-                                const isCorrect = /class=["']answer["']/.test(line);
+                            const options = lines.slice(0, 4).map((line) => {
+                                const letter = line.trim().charAt(0).toUpperCase();          // A/B/C/D
+                                const isCorrect = /class=["']answer["']/.test(line) ||          // span‑tag way
+                                    (answerLetter && letter === answerLetter);     // Answer: X fallback
                                 const text = line
                                     .replace(/<span class=["']answer["']>/, '')
                                     .replace('</span>', '')
@@ -336,12 +342,12 @@
                             });
 
                             /* shuffle so correct option isn’t always fixed */
-                            for (let i = opts.length - 1; i > 0; i--) {
+                            for (let i = options.length - 1; i > 0; i--) {
                                 const j = Math.floor(Math.random() * (i + 1));
-                                [opts[i], opts[j]] = [opts[j], opts[i]];
+                                [options[i], options[j]] = [options[j], options[i]];
                             }
 
-                            opts.forEach((opt, oi) => {
+                            options.forEach((opt, oi) => {
                                 const id = `q${qi}o${oi}`;
                                 const radio = document.createElement('input');
                                 radio.type = 'radio';
@@ -351,7 +357,8 @@
                                 const label = document.createElement('label');
                                 label.htmlFor = id;
                                 label.style.cssText =
-                                    'display:block;margin:6px 0;padding:6px 10px;border-radius:5px;cursor:pointer;border:1px solid #ccc;';
+                                    'display:block;margin:6px 0;padding:6px 10px;border-radius:5px;' +
+                                    'cursor:pointer;border:1px solid #ccc;';
                                 label.appendChild(radio);
                                 label.appendChild(document.createTextNode(' ' + opt.text));
                                 qDiv.appendChild(label);
@@ -360,13 +367,13 @@
                             form.appendChild(qDiv);
                         });
 
-                         overlay.querySelector('#submitQuiz').onclick = () => {
+                        overlay.querySelector('#submitQuiz').onclick = () => {
                             let right = 0;
                             correctMap.forEach((correctLabel, qi) => {
                                 const chosen = form.querySelector(`input[name="q${qi}"]:checked`);
                                 if (chosen) {
                                     const chosenLabel = form.querySelector(`label[for="${chosen.id}"]`);
-                                    if (chosen.getAttribute('data-correct') === 'true') {
+                                    if (chosen.dataset.correct === 'true') {
                                         chosenLabel.style.background = '#c8e6c9';
                                         right++;
                                     } else {
@@ -379,7 +386,8 @@
                             });
                             const pct = Math.round((right / correctMap.length) * 100);
                             addTokens(right);
-                            overlay.querySelector('#scoreBox').textContent = `🎯 You scored ${right}/${correctMap.length} (${pct}%)`;
+                            overlay.querySelector('#scoreBox').textContent =
+                                `🎯 You scored ${right}/${correctMap.length} (${pct}%)`;
                         };
                     } catch (err) {
                         overlay.innerHTML =
