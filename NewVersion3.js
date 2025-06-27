@@ -84,8 +84,6 @@
     bodyWrap.appendChild(modulesBox);
 
     // ▸ Divider
-    divider = document.createElement('hr');
-    divider.style.cssText = 'margin:18px 0;border:none;border-top:1px dashed #ccc;';
     bodyWrap.appendChild(divider);
 
     // ▸ BOTTOM BAR (Ask + Meme) fixed inside panel
