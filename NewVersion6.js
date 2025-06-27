@@ -73,10 +73,24 @@
     analysisBox.id = 'analysisBox';
     bodyWrap.appendChild(analysisBox);
 
+    // ▸ Divider
+    const divider = document.createElement('hr');
+    divider.style.cssText = 'margin:18px 0;border:none;border-top:1px dashed #ccc;';
+    bodyWrap.appendChild(divider);
+
     // ▸ Modules block (populated later)
     const modulesBox = document.createElement('div');
     modulesBox.id = 'modulesBox';
     bodyWrap.appendChild(modulesBox);
+
+    // ▸ DividerTwo
+    const dividerTwo = document.createElement('hr');
+    dividerTwo.style.cssText = 'margin:18px 0;border:none;border-top:1px dashed #ccc;';
+    bodyWrap.appendChild(dividerTwo);
+
+    const evalResult = document.createElement('div');
+    evalResult.style.cssText = 'margin-top:12px;font-size:14px;white-space:pre-wrap;';
+    modulesBox.appendChild(evalResult);
 
     // ▸ BOTTOM BAR (Ask + Meme) fixed inside panel
     const bottomBar = document.createElement('div');
@@ -207,11 +221,6 @@
             const analysis = await cohereQuery(analysisPrompt, 500);
             analysisBox.innerHTML = '<b>📘 Course Analysis:</b><br><br>' + analysis.replace(/\n/g, '<br>');
 
-            // ▸ Divider
-            const divider = document.createElement('hr');
-            divider.style.cssText = 'margin:18px 0;border:none;border-top:1px dashed #ccc;';
-            bodyWrap.appendChild(divider);
-
             /***** 2️⃣ Modules List *****/
             const mods = [...document.querySelectorAll('div[data-purpose="curriculum-section-container"] h3')];
             if (!mods.length) {
@@ -259,10 +268,7 @@
                     const txt = await cohereQuery(`I completed these modules:\n\n${selected.join('\n')}\n\nSuggest three hands‑on project ideas.`, 350);
                     ideasDiv.innerHTML = '<b>🚀 Project Ideas:</b><br>' + txt.replace(/\n/g, '<br>');
                 };
-                // ▸ DividerTwo
-                const dividerTwo = document.createElement('hr');
-                dividerTwo.style.cssText = 'margin:18px 0;border:none;border-top:1px dashed #ccc;';
-                bodyWrap.appendChild(dividerTwo);
+
                 /* --- Quiz Me --- */ /* (unchanged – code omitted for brevity) */
                 /* -------- END OF ORIGINAL MODULE SECTION -------- */
 
@@ -281,10 +287,6 @@
                 evalBtn.style.cssText =
                     'margin-top:10px;padding:6px 12px;border:none;background:#9c27b0;color:white;border-radius:4px;cursor:pointer;';
                 modulesBox.appendChild(evalBtn);
-
-                const evalResult = document.createElement('div');
-                evalResult.style.cssText = 'margin-top:12px;font-size:14px;white-space:pre-wrap;';
-                modulesBox.appendChild(evalResult);
 
                 evalBtn.onclick = async () => {
                     const link = ghInput.value.trim();
