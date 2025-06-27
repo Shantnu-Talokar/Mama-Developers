@@ -87,10 +87,10 @@
     const dividerTwo = document.createElement('hr');
     dividerTwo.style.cssText = 'margin:18px 0;border:none;border-top:1px dashed #ccc;';
     bodyWrap.appendChild(dividerTwo);
-
+    
     const evalResult = document.createElement('div');
-    evalResult.style.cssText = 'margin-top:12px;font-size:14px;white-space:pre-wrap;';
-    modulesBox.appendChild(evalResult);
+    evalResult.id = 'evalResult';
+    bodyWrap.appendChild(modulesBox);
 
     // ▸ BOTTOM BAR (Ask + Meme) fixed inside panel
     const bottomBar = document.createElement('div');
