@@ -92,6 +92,15 @@
     evalResult.id = 'evalResult';
     bodyWrap.appendChild(evalResult);
 
+    // ▸ DividerThree
+    const dividerThree = document.createElement('hr');
+    dividerThree.style.cssText = 'margin:18px 0;border:none;border-top:1px dashed #ccc;';
+    bodyWrap.appendChild(dividerThree);
+
+    const chatResult = document.createElement('div');
+    chatResult.id = 'chatResult';
+    bodyWrap.appendChild(chatResult);
+
     // ▸ BOTTOM BAR (Ask + Meme) fixed inside panel
     const bottomBar = document.createElement('div');
     bottomBar.style.cssText = 'flex:0 0 auto;padding:10px 14px;border-top:1px solid #eee;display:flex;align-items:center;gap:8px;';
@@ -327,12 +336,12 @@
         const q = askInput.value.trim();
         if (!q) return;
         askBtn.disabled = true;
-        analysisBox.insertAdjacentHTML('beforeend', '<br><b>🔸 You:</b> ' + q.replace(/\n/g, '<br>'));
-        analysisBox.insertAdjacentHTML('beforeend', '<br><i>⏳ …thinking</i>');
+        chatResult.insertAdjacentHTML('beforeend', '<br><b>🔸 You:</b> ' + q.replace(/\n/g, '<br>'));
+        chatResult.insertAdjacentHTML('beforeend', '<br><i>⏳ …thinking</i>');
         bodyWrap.scrollTop = bodyWrap.scrollHeight;
         try {
             const ans = await cohereQuery(q);
-            analysisBox.insertAdjacentHTML('beforeend', '<br><b>🤖 GPT:</b> ' + ans.replace(/\n/g, '<br>'));
+            chatResult.insertAdjacentHTML('beforeend', '<br><b>🤖 GPT:</b> ' + ans.replace(/\n/g, '<br>'));
         } finally {
             askBtn.disabled = false;
             askInput.value = '';
