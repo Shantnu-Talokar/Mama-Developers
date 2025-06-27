@@ -83,8 +83,10 @@
     modulesBox.id = 'modulesBox';
     bodyWrap.appendChild(modulesBox);
 
-    // ▸ Divider
-    bodyWrap.appendChild(divider);
+    // ▸ DividerTwo
+    const dividerTwo = document.createElement('hr');
+    dividerTwo.style.cssText = 'margin:18px 0;border:none;border-top:1px dashed #ccc;';
+    bodyWrap.appendChild(dividerTwo);
 
     // ▸ BOTTOM BAR (Ask + Meme) fixed inside panel
     const bottomBar = document.createElement('div');
