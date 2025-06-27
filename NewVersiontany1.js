@@ -360,7 +360,7 @@
                             form.appendChild(qDiv);
                         });
 
-                        overlay.querySelector('#submitQuiz').onclick = () => {
+                         overlay.querySelector('#submitQuiz').onclick = () => {
                             let right = 0;
                             correctMap.forEach((correctLabel, qi) => {
                                 const chosen = form.querySelector(`input[name="q${qi}"]:checked`);
@@ -378,9 +378,8 @@
                                 }
                             });
                             const pct = Math.round((right / correctMap.length) * 100);
-                            addTokens(right);                        /* reward tokens */
-                            overlay.querySelector('#scoreBox').textContent =
-                                `🎯 You scored ${right}/${correctMap.length} (${pct}%)`;
+                            addTokens(right);
+                            overlay.querySelector('#scoreBox').textContent = `🎯 You scored ${right}/${correctMap.length} (${pct}%)`;
                         };
                     } catch (err) {
                         overlay.innerHTML =
