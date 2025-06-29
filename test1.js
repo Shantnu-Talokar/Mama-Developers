@@ -150,11 +150,11 @@
     function addTokens(delta) { tokenPoints += delta; saveTokens(); updateTokenUI(); }
 
     /*************************************************
-     *  🔘 PRIMARY FLOATING BUTTON (📘)
+     *  🔘 PRIMARY FLOATING BUTTON (🤖)
      *************************************************/
     const mainBtn = document.createElement('button');
     mainBtn.id = 'udemyAnalyzerBtn';
-    mainBtn.textContent = '📘';
+    mainBtn.textContent = '🤖';
     mainBtn.style.cssText = [
         'position:fixed', 'bottom:20px', 'right:20px',
         'background:#4CAF50', 'color:white', 'border:none',
@@ -270,7 +270,7 @@
     setTimeout(updateTokenUI, 0);
 
     /*************************************************
-     *  📦  DRAG‑MOVE behaviour for 📘 button & panel
+     *  📦  DRAG‑MOVE behaviour for 🤖 button & panel
      *************************************************/
     let moved = false;
     mainBtn.onmousedown = e => {
@@ -298,7 +298,7 @@
     /*************************************************
      *  🛠️ COHERE HELPER
      *************************************************/
-    const apiKey = 'zXH8KUSA3ncfZcxvIAZx5boAlGlTirN6LJmp706Q';
+    const apiKey = 'XhLvmWU0xamB9rrSxqYiV5dleRnCZLdKdRgU0sgI';
     const endpoint = 'https://api.cohere.ai/v1/generate';
     const cohereQuery = async (prompt, max = 400, temp = 0.7) => {
         const res = await fetch(endpoint, {
@@ -357,8 +357,10 @@
     const mini = document.createElement('div');
     mini.style.cssText = [
         'display:none',
-        'position:absolute',                 // absolute for dynamic positioning
-        'width:260px',
+        'position:fixed',                 // fixed for screen positioning
+        'top:20px',                       // distance from top
+        'right:20px',                     // distance from right
+        'width:200px',
         'padding:12px',
         'background:#fff',
         'border:2px solid #888',
@@ -537,7 +539,7 @@ In-depth Details
         </div>
     </div>
 `;
-         /***** 2️⃣ Modules List *****/
+        /***** 2️⃣ Modules List *****/
         const mods = [...document.querySelectorAll('div[data-purpose="curriculum-section-container"] h3')];
         if (!mods.length) {
             modulesBox.innerHTML = `
@@ -1263,20 +1265,20 @@ Format strictly:
         <b style="display:block;text-align:center;font-size:18px;margin-bottom:12px;">🚀 Project Ideas:</b>
         <div style="width:100%;max-width:500px;text-align:left;">
             ${txt
-                .replace(/[#*]/g, '')
-                .replace(/\n{2,}/g, '\n') // Remove extra blank lines
-                .split(/\n+/)
-                .map(line => line.trim())
-                .filter(line => line)
-                .map(line => {
-                    const match = line.match(/^(\d+\.\s*)([^:]+):\s*(.*)$/);
-                    if (match) {
-                        const [_, number, title, desc] = match;
-                        return `<div style="margin-bottom:10px;"><b>${number}${title}</b>: ${desc}</div>`;
-                    }
-                    return `<div style="margin-bottom:10px;">${line}</div>`;
-                })
-                .join('')}
+                        .replace(/[#*]/g, '')
+                        .replace(/\n{2,}/g, '\n') // Remove extra blank lines
+                        .split(/\n+/)
+                        .map(line => line.trim())
+                        .filter(line => line)
+                        .map(line => {
+                            const match = line.match(/^(\d+\.\s*)([^:]+):\s*(.*)$/);
+                            if (match) {
+                                const [_, number, title, desc] = match;
+                                return `<div style="margin-bottom:10px;"><b>${number}${title}</b>: ${desc}</div>`;
+                            }
+                            return `<div style="margin-bottom:10px;">${line}</div>`;
+                        })
+                        .join('')}
         </div>
     </div>
 `;
@@ -1311,11 +1313,46 @@ Format strictly:
                 evalResult.innerHTML = '🔍 Evaluating project… please wait...';
 
                 const evalPrompt =
-                    `You are a software quality expert. A student submitted this GitHub project for review:\n\n${link}\n\n` +
-                    `Carefully analyze the repo based on common criteria like:\n` +
-                    `- Code structure and readability\n- Proper documentation and README\n- Modularity and best practices\n- Use of version control (commits, branches)\n- Innovation or uniqueness\n\n` +
-                    `Give constructive suggestions to improve.\nThen rate the project on a scale of 1 to 10 and justify the rating.\n\n` +
-                    `Respond in this format:\n---\nSuggestions:\n<your suggestions>\n\nRating: <score>/10\n---`;
+                    `You are a software project reviewer evaluating a student’s GitHub project:
+${link}
+
+Assess the project using the following parameters:
+
+Code Alignment & Structure (Is the code well-organized and logically structured?)
+
+README Quality (Is the README clear, informative, and useful for users/developers?)
+
+Uniqueness (How original or creative is the approach or implementation?)
+
+Innovation (Does the project introduce any new ideas, features, or approaches?)
+
+Critical Thinking (Does the student demonstrate problem-solving or thoughtful design?)
+
+Output Format (Strictly follow this):
+
+Suggestions:
+
+[short suggestion 1]
+
+[short suggestion 2]
+
+[short suggestion 3]
+
+Parameter Scores (out of 10):
+
+Code Alignment & Structure: __/10
+
+README Quality: __/10
+
+Uniqueness: __/10
+
+Innovation: __/10
+
+Critical Thinking: __/10
+
+Overall Rating: __/10
+
+Justification: [Brief summary of why the project received this score]`;
 
                 try {
                     const feedback = await cohereQuery(evalPrompt, 500);
@@ -1404,7 +1441,7 @@ Only output the JSON — no extra text.
         const resp = await fetch("https://api.cohere.ai/v1/generate", {
             method: "POST",
             headers: {
-                "Authorization": "Bearer zXH8KUSA3ncfZcxvIAZx5boAlGlTirN6LJmp706Q",
+                "Authorization": "Bearer XhLvmWU0xamB9rrSxqYiV5dleRnCZLdKdRgU0sgI",
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({ model: "command", prompt, max_tokens: 100, temperature: 0.9 })
@@ -1469,36 +1506,36 @@ Only output the JSON — no extra text.
     };
 
 
-/*************************************************
- *  🗓️ DAILY QUESTION HANDLER (logic reused)
- *************************************************/
-dqBtn.onclick = async () => {
-    const today = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
-    const qKey = 'dailyQ-data';
-    const dKey = 'dailyQ-date';
-    const aKey = 'dailyQ-done';
+    /*************************************************
+     *  🗓️ DAILY QUESTION HANDLER (logic reused)
+     *************************************************/
+    dqBtn.onclick = async () => {
+        const today = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
+        const qKey = 'dailyQ-data';
+        const dKey = 'dailyQ-date';
+        const aKey = 'dailyQ-done';
 
-    // ✅ Disable btn if already done
-    if (localStorage.getItem(aKey) === today) {
-        dqBtn.disabled = true;
-        dqBtn.style.background = '#ccc';
-        dqBtn.textContent = '✅ Attempted';
-        return;
-    }
+        // ✅ Disable btn if already done
+        if (localStorage.getItem(aKey) === today) {
+            dqBtn.disabled = true;
+            dqBtn.style.background = '#ccc';
+            dqBtn.textContent = '✅ Attempted';
+            return;
+        }
 
-    // helper to render the stored or freshly fetched question
-    const renderQuestion = (qBlock) => {
-        // build overlay (1-per-session)
-        let dqOver = document.getElementById('dailyQOverlay');
-        if (!dqOver) {
-            dqOver = document.createElement('div');
-            dqOver.id = 'dailyQOverlay';
-            dqOver.style.cssText =
-                'display:flex;flex-direction:column;align-items:center;position:fixed;top:10%;left:50%;' +
-                'transform:translateX(-50%);width:500px;max-width:90%;padding:22px;background:#fff;' +
-                'border:5px solid #3f51b5;border-radius:14px;z-index:10000;box-shadow:0 10px 25px rgba(0,0,0,.35);' +
-                'font-family:sans-serif;';
-            dqOver.innerHTML = `
+        // helper to render the stored or freshly fetched question
+        const renderQuestion = (qBlock) => {
+            // build overlay (1-per-session)
+            let dqOver = document.getElementById('dailyQOverlay');
+            if (!dqOver) {
+                dqOver = document.createElement('div');
+                dqOver.id = 'dailyQOverlay';
+                dqOver.style.cssText =
+                    'display:flex;flex-direction:column;align-items:center;position:fixed;top:10%;left:50%;' +
+                    'transform:translateX(-50%);width:500px;max-width:90%;padding:22px;background:#fff;' +
+                    'border:5px solid #3f51b5;border-radius:14px;z-index:10000;box-shadow:0 10px 25px rgba(0,0,0,.35);' +
+                    'font-family:sans-serif;';
+                dqOver.innerHTML = `
                 <button style="position:absolute;top:8px;right:12px;font-size:16px;border:none;background:#f44336;
                         color:white;padding:4px 10px;border-radius:4px;cursor:pointer;"
                         onclick="this.parentElement.remove()">✖</button>
@@ -1509,81 +1546,81 @@ dqBtn.onclick = async () => {
                         border:none;border-radius:5px;cursor:pointer;">Submit</button>
                 <div id="dqResult" style="margin-top:14px;font-weight:bold;text-align:center;"></div>
             `;
-            document.body.appendChild(dqOver);
+                document.body.appendChild(dqOver);
+            }
+
+            // fill form
+            const form = dqOver.querySelector('#dqForm');
+            form.innerHTML = '';
+            const { question, options } = qBlock;
+            const correctIdx = options.findIndex(o => o.isCorrect);
+
+            const qEl = document.createElement('div');
+            qEl.style.fontWeight = 'bold';
+            qEl.textContent = question;
+            form.appendChild(qEl);
+
+            options.forEach((opt, i) => {
+                const id = `dqo${i}`;
+                const wrap = document.createElement('label');
+                wrap.style.cssText =
+                    'display:block;margin:6px 0;padding:6px 9px;border-radius:5px;border:1px solid #ccc;cursor:pointer;';
+                wrap.innerHTML = `<input type="radio" name="dq" id="${id}" value="${i}" style="margin-right:6px;"> ${opt.text}`;
+                form.appendChild(wrap);
+            });
+
+            let timeLeft = 120;
+            const timerBox = dqOver.querySelector('#dqTimer');
+            timerBox.textContent = `⏳ Time left: 2:00`;
+            const tick = setInterval(() => {
+                --timeLeft;
+                const min = Math.floor(timeLeft / 60).toString();
+                const sec = (timeLeft % 60).toString().padStart(2, '0');
+                timerBox.textContent = `⏳ Time left: ${min}:${sec}`;
+                if (timeLeft <= 0) {
+                    clearInterval(tick);
+                    dqOver.querySelector('#dqSubmit').click();
+                }
+            }, 1000);
+
+            dqOver.querySelector('#dqSubmit').onclick = () => {
+                clearInterval(tick);
+                const chosen = form.querySelector('input[name="dq"]:checked');
+                const resBox = dqOver.querySelector('#dqResult');
+                if (!chosen) {
+                    resBox.textContent = '❗ No option selected!';
+                    return;
+                }
+                const idx = Number(chosen.value);
+                if (idx === correctIdx) {
+                    resBox.textContent = '✅ Correct!';
+                    resBox.style.color = '#2e7d32';
+                    addTokens(10); // ✅ reward tokens
+                } else {
+                    resBox.textContent = `❌ Wrong. Correct answer: ${options[correctIdx].text}`;
+                    resBox.style.color = '#c62828';
+                }
+                dqOver.querySelectorAll('input').forEach(inp => inp.disabled = true);
+                dqOver.querySelector('#dqSubmit').disabled = true;
+
+                // ✅ Mark as attempted
+                localStorage.setItem(aKey, today);
+                dqBtn.disabled = true;
+                dqBtn.style.background = '#ccc';
+                dqBtn.textContent = '✅ Attempted';
+            };
+        };
+
+        if (localStorage.getItem(dKey) === today) {
+            const stored = JSON.parse(localStorage.getItem(qKey) || '{}');
+            return renderQuestion(stored);
         }
 
-        // fill form
-        const form = dqOver.querySelector('#dqForm');
-        form.innerHTML = '';
-        const { question, options } = qBlock;
-        const correctIdx = options.findIndex(o => o.isCorrect);
-
-        const qEl = document.createElement('div');
-        qEl.style.fontWeight = 'bold';
-        qEl.textContent = question;
-        form.appendChild(qEl);
-
-        options.forEach((opt, i) => {
-            const id = `dqo${i}`;
-            const wrap = document.createElement('label');
-            wrap.style.cssText =
-                'display:block;margin:6px 0;padding:6px 9px;border-radius:5px;border:1px solid #ccc;cursor:pointer;';
-            wrap.innerHTML = `<input type="radio" name="dq" id="${id}" value="${i}" style="margin-right:6px;"> ${opt.text}`;
-            form.appendChild(wrap);
-        });
-
-        let timeLeft = 120;
-        const timerBox = dqOver.querySelector('#dqTimer');
-        timerBox.textContent = `⏳ Time left: 2:00`;
-        const tick = setInterval(() => {
-            --timeLeft;
-            const min = Math.floor(timeLeft / 60).toString();
-            const sec = (timeLeft % 60).toString().padStart(2, '0');
-            timerBox.textContent = `⏳ Time left: ${min}:${sec}`;
-            if (timeLeft <= 0) {
-                clearInterval(tick);
-                dqOver.querySelector('#dqSubmit').click();
-            }
-        }, 1000);
-
-        dqOver.querySelector('#dqSubmit').onclick = () => {
-            clearInterval(tick);
-            const chosen = form.querySelector('input[name="dq"]:checked');
-            const resBox = dqOver.querySelector('#dqResult');
-            if (!chosen) {
-                resBox.textContent = '❗ No option selected!';
-                return;
-            }
-            const idx = Number(chosen.value);
-            if (idx === correctIdx) {
-                resBox.textContent = '✅ Correct!';
-                resBox.style.color = '#2e7d32';
-                addTokens(10); // ✅ reward tokens
-            } else {
-                resBox.textContent = `❌ Wrong. Correct answer: ${options[correctIdx].text}`;
-                resBox.style.color = '#c62828';
-            }
-            dqOver.querySelectorAll('input').forEach(inp => inp.disabled = true);
-            dqOver.querySelector('#dqSubmit').disabled = true;
-
-            // ✅ Mark as attempted
-            localStorage.setItem(aKey, today);
+        try {
+            dqBtn.textContent = '⏳ Creating…';
             dqBtn.disabled = true;
-            dqBtn.style.background = '#ccc';
-            dqBtn.textContent = '✅ Attempted';
-        };
-    };
 
-    if (localStorage.getItem(dKey) === today) {
-        const stored = JSON.parse(localStorage.getItem(qKey) || '{}');
-        return renderQuestion(stored);
-    }
-
-    try {
-        dqBtn.textContent = '⏳ Creating…';
-        dqBtn.disabled = true;
-
-        const prompt = `
+            const prompt = `
 Generate EXACTLY one aptitude multiple-choice question in the domain of logical reasoning or quantitative aptitude.
 
 • Return in this format (no extra commentary):
@@ -1597,40 +1634,281 @@ Answer: <capital letter of correct option>
 Use real aptitude style, medium difficulty.
         `.trim();
 
-        const raw = await cohereQuery(prompt, 180);
-        dqBtn.textContent = '🗓️ Daily Question';
-        dqBtn.disabled = false;
+            const raw = await cohereQuery(prompt, 180);
+            dqBtn.textContent = '🗓️ Daily Question';
+            dqBtn.disabled = false;
 
-        const qMatch = raw.match(/^Q\)?\s*(.*)$/im);
-        const oMatch = raw.match(/^[A-D]\).*/gim);
-        const aMatch = raw.match(/Answer:\s*([A-D])/i);
-        if (!qMatch || !oMatch || oMatch.length !== 4 || !aMatch) {
-            return alert('⚠️ Could not parse question from Cohere.');
+            const qMatch = raw.match(/^Q\)?\s*(.*)$/im);
+            const oMatch = raw.match(/^[A-D]\).*/gim);
+            const aMatch = raw.match(/Answer:\s*([A-D])/i);
+            if (!qMatch || !oMatch || oMatch.length !== 4 || !aMatch) {
+                return alert('⚠️ Could not parse question from Cohere.');
+            }
+
+            const qBlock = {
+                question: qMatch[1].trim(),
+                options: oMatch.map((l, i) => ({
+                    text: l.replace(/^[A-D]\)\s*/, '').trim(),
+                    isCorrect: 'ABCD'[i] === aMatch[1].toUpperCase()
+                }))
+            };
+
+            localStorage.setItem(qKey, JSON.stringify(qBlock));
+            localStorage.setItem(dKey, today);
+
+            renderQuestion(qBlock);
+        } catch (err) {
+            dqBtn.textContent = '🗓️ Daily Question';
+            dqBtn.disabled = false;
+            console.error(err);
+            alert('❌ Error generating daily question – see console.');
+        }
+    };
+/*************************************************
+     *  🎮 MATCHING GAME BUTTON IN BOOKMARKLET PANEL
+     *************************************************/
+    // 1. Create the button and add to headerBar or wherever you want
+    const matchingGameBtn = document.createElement('button');
+    matchingGameBtn.textContent = '🎮 Matching Game';
+    matchingGameBtn.style.cssText = 'padding:6px 14px;background:#009688;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:13px;';
+    headerBar.appendChild(matchingGameBtn);
+
+    // 2. Add a container for the game popup (hidden by default)
+    let matchingGameOverlay = document.getElementById('matchingGameOverlay');
+    if (!matchingGameOverlay) {
+        matchingGameOverlay = document.createElement('div');
+        matchingGameOverlay.id = 'matchingGameOverlay';
+        matchingGameOverlay.style.cssText = `
+        display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;
+        background:rgba(0,0,0,0.25);z-index:10001;align-items:center;justify-content:center;
+    `;
+        document.body.appendChild(matchingGameOverlay);
+    }
+
+    // 3. Insert the game HTML into the overlay when button is clicked
+    matchingGameBtn.onclick = async () => {
+        // 1. Extract course heading/title
+        const courseTitle = document.querySelector('h1')?.innerText || 'Untitled Course';
+
+        // 2. Try to extract selected modules (if available)
+        let selectedModules = [];
+        const moduleCheckboxes = document.querySelectorAll('#modulesList input[type="checkbox"]');
+        if (moduleCheckboxes.length) {
+            selectedModules = Array.from(moduleCheckboxes)
+                .map((chk, i) => chk.checked ? document.querySelectorAll('#modulesList label')[i].textContent.trim() : null)
+                .filter(Boolean);
         }
 
-        const qBlock = {
-            question: qMatch[1].trim(),
-            options: oMatch.map((l, i) => ({
-                text: l.replace(/^[A-D]\)\s*/, '').trim(),
-                isCorrect: 'ABCD'[i] === aMatch[1].toUpperCase()
-            }))
-        };
+        // 3. Show loading UI
+        matchingGameOverlay.innerHTML = `
+      <div class="game-container" style="position:relative;min-height:180px;display:flex;align-items:center;justify-content:center;">
+        <div style="width:100%;text-align:center;font-size:17px;padding:40px 0;">⏳ Generating matching questions for<br><b>${selectedModules.length ? selectedModules.join(', ') : courseTitle}</b>…</div>
+      </div>
+    `;
+        matchingGameOverlay.style.display = "flex";
 
-        localStorage.setItem(qKey, JSON.stringify(qBlock));
-        localStorage.setItem(dKey, today);
+        // 4. AI prompt for module-specific term/definition pairs (short, compact)
+        const matchPrompt = selectedModules.length
+            ? `
+You are an expert quiz maker.
+Given these course modules:
+${selectedModules.join('\n')}
+Generate 5 pairs of important terms and their definitions for a matching game.
+Each term must be at most 3 words. Each definition must be at most 12 words, simple and clear.
+Format as JSON array: [{"term":"...","definition":"..."}]
+Only output the JSON array, no extra text.
+`
+            : `
+You are an expert quiz maker.
+Given the course title: "${courseTitle}"
+Generate 5 pairs of important terms and their definitions for a matching game.
+Each term must be at most 3 words. Each definition must be at most 12 words, simple and clear.
+Format as JSON array: [{"term":"...","definition":"..."}]
+Only output the JSON array, no extra text.
+`;
 
-        renderQuestion(qBlock);
-    } catch (err) {
-        dqBtn.textContent = '🗓️ Daily Question';
-        dqBtn.disabled = false;
-        console.error(err);
-        alert('❌ Error generating daily question – see console.');
+        let pairs = [];
+        try {
+            const aiResp = await fetch('https://api.cohere.ai/v1/generate', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer XhLvmWU0xamB9rrSxqYiV5dleRnCZLdKdRgU0sgI',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model: 'command-r-plus',
+                    prompt: matchPrompt,
+                    max_tokens: 300,
+                    temperature: 0.7
+                })
+            });
+            const aiData = await aiResp.json();
+            let text = aiData.generations?.[0]?.text?.trim();
+            // Try to extract JSON array from response
+            const jsonMatch = text.match(/\[.*\]/s);
+            if (jsonMatch) text = jsonMatch[0];
+            pairs = JSON.parse(text);
+            if (!Array.isArray(pairs) || !pairs[0]?.term || !pairs[0]?.definition) throw new Error();
+        } catch (e) {
+            matchingGameOverlay.innerHTML = `
+          <div class="game-container" style="position:relative;min-height:180px;display:flex;align-items:center;justify-content:center;">
+            <div style="width:100%;text-align:center;font-size:17px;padding:40px 0;color:red;">
+              ❌ Failed to generate questions for<br><b>${selectedModules.length ? selectedModules.join(', ') : courseTitle}</b>.<br>Please try again.
+            </div>
+            <div class="close-btn" title="Close" style="position:absolute;top:10px;right:18px;font-size:22px;font-weight:bold;color:#888;background:#fff;border:1.5px solid #b6c7e6;border-radius:50%;width:32px;height:32px;line-height:28px;text-align:center;cursor:pointer;box-shadow:0 2px 8px rgba(80,120,200,0.10);transition:background 0.2s, color 0.2s;z-index:10;">&times;</div>
+          </div>
+        `;
+            matchingGameOverlay.querySelector('.close-btn').onclick = function() {
+                matchingGameOverlay.style.display = 'none';
+                matchingGameOverlay.innerHTML = "";
+            };
+            return;
+        }
+
+        // 5. Render the game UI (CSS unchanged, compact questions)
+        matchingGameOverlay.innerHTML = `
+      <div class="game-container" style="position:relative;">
+        <div class="close-btn" title="Close" style="position:absolute;top:10px;right:18px;font-size:22px;font-weight:bold;color:#888;background:#fff;border:1.5px solid #b6c7e6;border-radius:50%;width:32px;height:32px;line-height:28px;text-align:center;cursor:pointer;box-shadow:0 2px 8px rgba(80,120,200,0.10);transition:background 0.2s, color 0.2s;z-index:10;">&times;</div>
+        <h2 style="font-size:16px;color:#333;margin-bottom:10px;text-align:center;">🔁 Match Terms for: <span style="color:#007bff">${selectedModules.length ? selectedModules.join(', ') : courseTitle}</span></h2>
+        <div id="scoreBoard">⏱ <span id="timer">30</span>s | ✅ Score: <span id="score">0</span>/5</div>
+        <div id="game" style="display:flex;flex-direction:row;gap:12px;max-width:320px;flex-wrap:wrap;justify-content:center;margin-bottom:10px;">
+          <div id="terms"></div>
+          <div id="boxes"></div>
+        </div>
+        <div style="font-size:12px;color:#666;margin-top:8px;text-align:center;">
+          Drag the terms on the left to their correct definitions on the right.<br>
+          Wrong attempts will disable the option. Good luck!
+        </div>
+        <audio id="rightSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_58e1ab1a43.mp3"></audio>
+        <audio id="wrongSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_57c7ccdfba.mp3"></audio>
+      </div>
+      <style>
+        .game-container { background: linear-gradient(135deg, #e3f0ff 0%, #f9f6ff 100%); border: 1.5px solid #b6c7e6; border-radius: 16px; box-shadow: 0 6px 24px rgba(80,120,200,0.10); padding: 18px 10px 14px 10px; margin-top: 0; max-width: 370px; width: 100%; min-width: 220px; display: flex; flex-direction: column; align-items: center; position: relative;}
+        .term, .box { width: 120px; min-height:  28px; margin: 3px; padding: 5px 6px; font-size: 12px; border-radius: 6px; border: 1.5px dashed #bbb; background-color: #fff; box-sizing: border-box; cursor: move; transition: background 0.3s; text-align: center; user-select: none;}
+        .term { background: #e3f2fd; font-weight: 500;}
+        .box.correct { background: #d0f0c0; border-color: #4caf50;}
+        .box.wrong { background: #fddede; border-color: #f44336;}
+        #scoreBoard { margin: 8px 0 10px; font-size: 13px; color: #333; background: #fff; border-radius: 8px; padding: 5px 10px; box-shadow: 0 2px 8px rgba(80,120,200,0.06); display: inline-block;}
+        #timer { font-weight: bold; color: #e53935;}
+        .term.disabled { background: #eee !important; color: #aaa !important; border-color: #ddd !important; text-decoration: line-through; cursor: not-allowed !important;}
+        .close-btn:hover { background: #f44336; color: #fff; border-color: #f44336;}
+        @media (max-width: 500px) { .game-container { max-width: 98vw; } .term, .box { width: 90vw; min-width: 90px; } #game { max-width: 98vw; } }
+      </style>
+    `;
+
+    let score = 0;
+    let finalScore = 0;
+    let timeLeft = 30;
+    let matched = 0;
+
+    const scoreSpan = matchingGameOverlay.querySelector("#score");
+    const timerSpan = matchingGameOverlay.querySelector("#timer");
+    const termsDiv = matchingGameOverlay.querySelector("#terms");
+    const boxesDiv = matchingGameOverlay.querySelector("#boxes");
+
+    const rightSound = matchingGameOverlay.querySelector("#rightSound");
+    const wrongSound = matchingGameOverlay.querySelector("#wrongSound");
+
+    // Shuffle terms and boxes independently for the game
+    const shuffledTerms = [...pairs].sort(() => Math.random() - 0.5);
+    const shuffledBoxes = [...pairs].sort(() => Math.random() - 0.5);
+
+    // Map term to its element for quick disabling
+    const termElements = {};
+
+    shuffledTerms.forEach(({ term }) => {
+      const div = document.createElement("div");
+      div.className = "term";
+      div.draggable = true;
+      div.textContent = term;
+      div.id = "term-" + term.replace(/\s/g, "-");
+      div.ondragstart = e => {
+        if (div.classList.contains("disabled")) {
+          e.preventDefault();
+        } else {
+          e.dataTransfer.setData("text", term);
+        }
+      };
+      termsDiv.appendChild(div);
+      termElements[term] = div;
+    });
+
+    shuffledBoxes.forEach(({ term, definition }) => {
+      const box = document.createElement("div");
+      box.className = "box";
+      box.textContent = definition;
+      box.ondragover = e => e.preventDefault();
+      box.ondrop = e => {
+        e.preventDefault();
+        const dragged = e.dataTransfer.getData("text");
+        if (dragged === term) {
+          score++;
+          matched++;
+          scoreSpan.textContent = score;
+          box.classList.add("correct");
+          box.textContent = dragged + " ✅";
+          const draggedEl = matchingGameOverlay.querySelector("#term-" + dragged.replace(/\s/g, "-"));
+          if (draggedEl) draggedEl.remove();
+          rightSound.play();
+          checkGameEnd();
+        } else {
+          box.classList.add("wrong");
+          // Disable the wrong option
+          const wrongEl = termElements[dragged];
+          if (wrongEl) {
+            wrongEl.classList.add("disabled");
+            wrongEl.draggable = false;
+            wrongEl.style.opacity = "0.5";
+            wrongEl.style.cursor = "not-allowed";
+          }
+          setTimeout(() => box.classList.remove("wrong"), 600);
+          wrongSound.play();
+          checkGameEnd();
+        }
+      };
+      boxesDiv.appendChild(box);
+    });
+
+    const timer = setInterval(() => {
+      timeLeft--;
+      timerSpan.textContent = timeLeft;
+      if (timeLeft <= 0 || matched === pairs.length) {
+        clearInterval(timer);
+        finalScore = score;
+        alert(`⏳ Time's up! You matched ${finalScore}/${pairs.length} correctly.`);
+        console.log("✅ Final Score:", finalScore);
+      }
+    }, 1000);
+
+    // Helper to check if all options are gone or disabled
+    function checkGameEnd() {
+      // Check if all .term elements are removed or have .disabled
+      const remaining = Array.from(matchingGameOverlay.querySelectorAll('.term')).filter(el => !el.classList.contains('disabled'));
+      if (matched === pairs.length || remaining.length === 0) {
+        clearInterval(timer);
+        finalScore = score;
+        setTimeout(() => {
+          // Calculate token change: +score for correct, -1 for each wrong (disabled) option
+          const totalTerms = pairs.length;
+          const disabledCount = Array.from(matchingGameOverlay.querySelectorAll('.term.disabled')).length;
+          const tokenDelta = finalScore - disabledCount;
+          if (tokenDelta !== 0) addTokens(tokenDelta);
+
+          alert(`🎉 Game Over! You matched ${finalScore}/${totalTerms} correctly.\n\nTokens ${tokenDelta >= 0 ? 'added' : 'deducted'}: ${tokenDelta}`);
+          console.log("✅ Final Score:", finalScore, "Token change:", tokenDelta);
+        }, 100);
+      }
     }
+
+    // Close button logic
+    matchingGameOverlay.querySelector('.close-btn').onclick = function() {
+      matchingGameOverlay.style.display = 'none';
+      matchingGameOverlay.innerHTML = ""; // Clean up
+    };
 };
+    /*************************************************
+     *  Attach primary button to page
+     *************************************************/
+    document.body.appendChild(mainBtn);
 
-/*************************************************
- *  Attach primary button to page
- *************************************************/
-document.body.appendChild(mainBtn);
-
-}) ();
+})();
