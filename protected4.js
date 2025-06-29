@@ -225,21 +225,6 @@
     const chatResult = document.createElement('div');
     chatResult.id = 'chatResult';
     bodyWrap.appendChild(chatResult);
-    chatResult.style.cssText = `
-    margin: 0 auto;
-    max-width: 95%;
-    background: linear-gradient(135deg, #e1f5fe 0%, #b3e5fc 100%);
-    padding: 18px 28px;
-    border-radius: 10px;
-    border: 1px solid #81d4fa;
-    box-sizing: border-box;
-    font-family: inherit;
-    font-size: 15px;
-    line-height: 1.6;
-    color: #222;
-    box-shadow: 0 4px 12px rgba(30, 150, 255, 0.15);
-    overflow-wrap: break-word;
-`;
 
     // ▸ BOTTOM BAR (Ask + Meme) fixed inside panel
     const bottomBar = document.createElement('div');
