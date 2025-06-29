@@ -1308,7 +1308,7 @@ Format strictly:
                     alert('❌ Please enter a valid GitHub repository link.');
                     return;
                 }
-                evalResult.innerHTML = '🔍 Evaluating project… please wait...';
+                outputDiv.innerHTML = '🔍 Evaluating project… please wait...';
 
                 const evalPrompt =
                     `You are a software quality expert. A student submitted this GitHub project for review:\n\n${link}\n\n` +
@@ -1319,7 +1319,7 @@ Format strictly:
 
                 try {
                     const feedback = await cohereQuery(evalPrompt, 500);
-                    evalResult.innerHTML = '✅ <b>Evaluation:</b><br><br>' + feedback.replace(/\n/g, '<br>');
+                    outputDiv.innerHTML = '✅ <b>Evaluation:</b><br><br>' + feedback.replace(/\n/g,'<br>');
                 } catch (err) {
                     evalResult.innerHTML =
                         '<span style="color:red">❌ Error evaluating project – see console.</span>';
@@ -1339,6 +1339,12 @@ Format strictly:
         'margin-top:10px;margin-left:10px;padding:6px 12px;border:none;background:#2196f3;color:white;border-radius:4px;cursor:pointer;';
     evalResult.appendChild(visBtn);
 
+    // 👉 place this right after you append visBtn
+    const outputDiv = document.createElement('div');
+    outputDiv.id = 'evalOutput';
+    outputDiv.style.cssText = 'margin-top:15px;white-space:pre-wrap;';
+    evalResult.appendChild(outputDiv);
+
     visBtn.onclick = async () => {
         const link = ghInput.value.trim();
         if (!link.startsWith('https://github.com/')) {
@@ -1346,7 +1352,7 @@ Format strictly:
             return;
         }
 
-        evalResult.innerHTML = '📈 Generating visualization… please wait...';
+        outputDiv.innerHTML = '🔍 Evaluating project… please wait...';
 
         const piePrompt = `This is my github project ${link}, I want to make a pie chart of this on various factors of scoring criteria. My scoring criteria is {code feasibility:30%, alignment:20%, readme:20%, innovation:20%, uniqueness:10%}. Generate values for each factor to make a piechart out of it.`;
 
@@ -1381,7 +1387,7 @@ Format strictly:
             const img = new Image();
             img.src = chartUrl;
             img.style = 'margin-top:20px;max-width:300px;border-radius:10px;';
-            evalResult.appendChild(img);
+            outputDiv.appendChild(img);
 
         } catch (err) {
             evalResult.innerHTML =
