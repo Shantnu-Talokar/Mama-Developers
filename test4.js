@@ -1892,7 +1892,8 @@ Only output the JSON array, no extra text.
           const totalTerms = pairs.length;
           const disabledCount = Array.from(matchingGameOverlay.querySelectorAll('.term.disabled')).length;
           const tokenDelta = finalScore - disabledCount;
-          if (tokenDelta !== 0) addTokens(tokenDelta);
+          //if (tokenDelta !== 0) addTokens(tokenDelta);
+          addTokens(finalScore);
 
           alert(`🎉 Game Over! You matched ${finalScore}/${totalTerms} correctly.\n\nTokens ${tokenDelta >= 0 ? 'added' : 'deducted'}: ${tokenDelta}`);
           console.log("✅ Final Score:", finalScore, "Token change:", tokenDelta);
