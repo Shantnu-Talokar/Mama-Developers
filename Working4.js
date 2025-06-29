@@ -1346,15 +1346,15 @@ Format strictly:
     evalResult.appendChild(outputDiv);
 
     visBtn.onclick = async () => {
-        const link = ghInput.value.trim();
-        if (!link.startsWith('https://github.com/')) {
+        const linkk = ghInput.value.trim();
+        if (!linkk.startsWith('https://github.com/')) {
             alert('❌ Please enter a valid GitHub repository link.');
             return;
         }
 
         outputDiv.innerHTML = '📈 Generating visualization… please wait...';
 
-        const piePrompt = `This is my github project ${link}, I want to make a pie chart of this on various factors of scoring criteria. My scoring criteria is {code feasibility:30%, alignment:20%, readme:20%, innovation:20%, uniqueness:10%}. Generate values for each factor to make a piechart out of it.`;
+        const piePrompt = `This is my github project ${linkk}, I want to make a pie chart of this on various factors of scoring criteria. My scoring criteria is {code feasibility:30%, alignment:20%, readme:20%, innovation:20%, uniqueness:10%}. Generate values for each factor to make a piechart out of it.`;
 
         try {
             const response = await cohereQuery(piePrompt, 500);
