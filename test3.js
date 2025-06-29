@@ -1902,7 +1902,6 @@ Only output the JSON array, no extra text.
 
     // Close button logic
     matchingGameOverlay.querySelector('.close-btn').onclick = function() {
-      addToken(finalScore);
       matchingGameOverlay.style.display = 'none';
       matchingGameOverlay.innerHTML = ""; // Clean up
     };
