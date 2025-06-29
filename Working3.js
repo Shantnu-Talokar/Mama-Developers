@@ -1319,7 +1319,7 @@ Format strictly:
 
                 try {
                     const feedback = await cohereQuery(evalPrompt, 500);
-                    outputDiv.innerHTML = '✅ <b>Evaluation:</b><br><br>' + feedback.replace(/\n/g,'<br>');
+                    outputDiv.innerHTML = '✅ <b>Evaluation:</b><br><br>' + feedback.replace(/\n/g, '<br>');
                 } catch (err) {
                     evalResult.innerHTML =
                         '<span style="color:red">❌ Error evaluating project – see console.</span>';
@@ -1339,7 +1339,7 @@ Format strictly:
         'margin-top:10px;margin-left:10px;padding:6px 12px;border:none;background:#2196f3;color:white;border-radius:4px;cursor:pointer;';
     evalResult.appendChild(visBtn);
 
-    // 👉 place this right after you append visBtn
+    // 👉 add right here –– after visBtn is appended
     const outputDiv = document.createElement('div');
     outputDiv.id = 'evalOutput';
     outputDiv.style.cssText = 'margin-top:15px;white-space:pre-wrap;';
@@ -1352,7 +1352,7 @@ Format strictly:
             return;
         }
 
-        outputDiv.innerHTML = '🔍 Evaluating project… please wait...';
+        outputDiv.innerHTML = '📈 Generating visualization… please wait...';
 
         const piePrompt = `This is my github project ${link}, I want to make a pie chart of this on various factors of scoring criteria. My scoring criteria is {code feasibility:30%, alignment:20%, readme:20%, innovation:20%, uniqueness:10%}. Generate values for each factor to make a piechart out of it.`;
 
