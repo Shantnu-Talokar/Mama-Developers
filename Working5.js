@@ -1347,6 +1347,7 @@ Format strictly:
 
     visBtn.onclick = async () => {
         const linkk = ghInput.value.trim();
+        console.log(linkk);
         if (!linkk.startsWith('https://github.com/')) {
             alert('❌ Please enter a valid GitHub repository link.');
             return;
