@@ -1895,7 +1895,7 @@ Only output the JSON array, no extra text.
           //if (tokenDelta !== 0) addTokens(tokenDelta);
           addTokens(finalScore);
 
-          alert(`🎉 Game Over! You matched ${finalScore}/${totalTerms} correctly.\n\nTokens ${tokenDelta >= 0 ? 'added' : 'deducted'}: ${tokenDelta}`);
+          alert(`🎉 Game Over! You matched ${finalScore}/${totalTerms} correctly.`);
           console.log("✅ Final Score:", finalScore, "Token change:", tokenDelta);
         }, 100);
       }
